@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 10:05:27 by hepompid          #+#    #+#             */
-/*   Updated: 2023/09/06 12:16:47 by hepompid         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:44:07 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ int	end_of_line(char *str, int read_count)
 	return (0);
 }
 
+/*
+	s'assure qu'on est pas a une fin de ligne, soit en trouvant \n,
+	soit parce que c'est la fin du fichier.
+*/
+
 char	*str_fill(char *newline, char *buffer)
 {
 	if (!newline)
@@ -42,6 +47,10 @@ char	*str_fill(char *newline, char *buffer)
 		newline = ft_strjoin_free(newline, buffer);
 	return (newline);
 }
+
+/*
+	remplit la newline ou lui ajoute les caracteres contenus dans le buffer.
+*/
 
 char	*clean_end(char *newline)
 {
@@ -61,6 +70,10 @@ char	*clean_end(char *newline)
 	}
 	return (newline);
 }
+
+/*
+	retire dans newline tous les caracteres presents apres le \n
+*/
 
 int	check_buffer(char *buffer)
 {
@@ -85,6 +98,13 @@ int	check_buffer(char *buffer)
 	return (0);
 }
 
+/*
+	check_buffer s'assure que le buffer a encore des caracteres apres 
+	le saut de ligne, auquel cas il rapatrie tous les caracteres presents
+	apres le saut de ligne au debut. suivi d'un strdup, il va permettre
+	d'incorporer ces residus au debut de newline.
+*/
+
 char	*get_next_line(int fd)
 {
 	static char	buffer[1024][BUFFER_SIZE + 1];
@@ -94,9 +114,9 @@ char	*get_next_line(int fd)
 	read_count = -1;
 	newline = NULL;
 	if (check_buffer(buffer[fd]) == 1)
-	{
 		newline = ft_strdup(buffer[fd]);
-	}
+	if (!newline)
+		return (NULL);
 	while (end_of_line(newline, read_count) == 0 && read_count != 0)
 	{
 		read_count = read(fd, buffer[fd], BUFFER_SIZE);
@@ -111,6 +131,7 @@ char	*get_next_line(int fd)
 	return (newline);
 }
 
+/*
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -119,7 +140,6 @@ char	*get_next_line(int fd)
 int main()
 {
 	int fd1 = open("get_next_line.h", O_RDONLY);
-	int fd2 = open("get_next_line_utils.c", O_RDONLY);
 	char *str;
 
 	str = get_next_line(fd1);
@@ -127,13 +147,10 @@ int main()
 	{
 		printf("%s", str);
 		free(str);
-		str = get_next_line(fd2);
-		printf("%s", str);
-		free(str);
 		str = get_next_line(fd1);
 	}
 	free(str);
 	close(fd1);
-	close(fd2);
 	return 0;
 }
+*/
