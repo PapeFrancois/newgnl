@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 10:05:27 by hepompid          #+#    #+#             */
-/*   Updated: 2023/10/05 15:11:05 by hepompid         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:54:25 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,6 @@ char	*get_next_line(int fd)
 		if (!newline)
 			return (NULL);
 	}
-	if (!newline)
-		return (NULL);
 	while (end_of_line(newline, read_count) == 0 && read_count != 0)
 	{
 		read_count = read(fd, buffer[fd], BUFFER_SIZE);
